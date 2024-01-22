@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block head_title %}FaBook{% endblock %} {% block content %}
+{% load static %}
+
+<main class="container-fluid">
+  <div class="col-md-12">
+     <div class="row">
+       <div class="left-side col-md-3" style="height: 50vh;">
+           <div class="d-flex flex-wrap align-items-center gap-3 p-4" >
+               {% for user in posted_user %}
+                  {% if user.user.email == request.user.email %}
+                    <div style="width: 48px; height: 48px; border: 2px solid gray; border-radius: 50%;">
+                      <img  style="width: 45px; height: 45px; border-radius: 50%;"  src="{{user.profile_picture.url}}" alt="">
+                    </div>
+                    <div>{{user.user.username}}</div>
+                  {% endif %}
+               {% endfor %}
+           </div>
+       </div>
+       <div class="middle-side col-md-6">
+           <div class="create-post m-auto mt-4 rounded h-auto" style="height: 30vh; width: 90%; border: 3px solid gray;">
+             <h4 class="p-4">Create New Post</h4>
+             {% load crispy_forms_tags %}
+             <form method="post" style="width: 50%; margin: auto;" class="mt-5" enctype="multipart/form-data">
+              <h1>{{type}}</h1> 
+              {% csrf_token %}
+              {{form | crispy}}
+              <button class="btn btn-warning">Submit</button>
+           </form>
+           </div>
+           {% for p in data %}
+           <div class="all-post m-auto mt-4 rounded h-auto" style=" width: 90%; background: white;">
+              <div class="profile-picture d-flex p-3 gap-2">
+                <div style="width: 48px; height: 48px; border: 2px solid gray; border-radius: 50%;">
+                  {% for user in  posted_user %}  
+                       {% if user.user.email == p.posted_user.email %}
+                         <img  style="width: 45px; height: 45px; border-radius: 50%;"  src="{{user.profile_picture.url}}" alt="">
+                        </div>
+                        <div>
+                          <div>{{user.user.username}}</div>
+                          {% endif %}
+                        {% endfor %}
+                    <div><i class="fa-solid fa-globe"></i>{{p.published_date}}</div>
+                  </div>
+               </div>
+ 
+               <div class="p-3">
+                <span class="" ><img style="width: 60%; height:300px;" src="{{p.image.url}}" alt=""></span>
+                <p>{{p.description}}</p>
+               </div>
+               <hr>
+               <div class="d-flex justify-content-around gap-5">
+                  <span id="likes">like: {{like}}</span>
+                  <span>comment:12</span>
+                </div>
+                <hr class="m-auto my-2" style="width: 90%;">
+               <div class="d-flex justify-content-around">
+                  <div class="like-button">
+                     <i class="fa fa-thumbs-up"></i>
+                  </div>
+                  {% comment %} <div style="cursor: pointer;" onclick="commentFunc()">comment</div> {% endcomment %}
+                  <div style="cursor: pointer;" id="comment_{{p.id}}" onclick="commentFunc({{p.id}})">comment</div>
+                  <div>saved</div>
+               </div>
+               <hr class="m-auto my-2" style="width: 90%;">
+               <div class="p-3">
+                <div id="comment_div_{{p.id}}" class="m-auto d-none">
+                  <form class="comment_form" method="post" action="">
+                    {% csrf_token %}
+                    {{comment_form | crispy}}
+          
+                   <a class="btn btn-warning" href="{% url "comment" p.id %}">Send</a>
+                </div>
+               </div>
+              </div>
+              {% endfor %}
+            </div>
+       <div class="right-side col-md-3" style="height: 50vh;"></div>
+     </div>
+  </div>
+</main>
+  
+ 
+{% endblock %}
