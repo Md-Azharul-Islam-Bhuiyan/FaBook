@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-7l#e(hd#1jxb031p59_$521x!n1ed-4ktov^rq$&ci^ld9*8lr
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
-CSRF_TRUSTED_ORIGINS = ['https://boibook.onrender.com','https://*.127.0.0.1']
+CSRF_TRUSTED_ORIGINS = ['https://fabook.onrender.com','https://*.127.0.0.1']
 
 
 
