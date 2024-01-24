@@ -15,7 +15,8 @@ body{
   }
   
   nav{
-      background: rgb(243, 242, 242);
+      /* background: rgb(229, 252, 253); */
+      background: #2180ed;
   }
   
   .menu{
@@ -97,6 +98,7 @@ body{
 }
 
 
+
 /*****  like button css     ****/
 
 .like-button{
@@ -107,3 +109,17 @@ body{
   color:rgb(8, 164, 226);
 }
 
+.cm-img{
+    height: 48px;
+    width: 48px;
+    border-radius: 24px;
+}
+.cm-img img{
+    height: 45px;
+    width: 45px;
+    border-radius: 24px;
+}
+
+.img-label{
+    display: none;
+}

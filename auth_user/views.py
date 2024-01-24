@@ -1,10 +1,11 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from book.models import PostModel,Comment, LikePost, DisLikePost
+from auth_user.models import UserAccount
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import PasswordChangeForm
 from auth_user.forms import UserRegistrationForm, UserUpdateForm
-from django.views.generic import  FormView, View, UpdateView
+from django.views.generic import  FormView, View, UpdateView, DetailView
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import login, logout, update_session_auth_hash
 from django.contrib import messages
@@ -39,11 +40,27 @@ class UserRegistrationView(FormView):
 @login_required
 def profile(request):
     data = PostModel.objects.filter(posted_user = request.user)
-    comment = Comment.objects.filter(email = request.user.email)
-    like = LikePost.objects.filter(user=request.user)
-    dislike= DisLikePost.objects.filter(user=request.user)
-    return render(request, 'auth_user/Dashboard.html', {'data': data, 'comment': comment, "likedata": like, "dislikedata": dislike})
+    comment = Comment.objects.filter(user=request.user)
     
+    return render(request, 'auth_user/Dashboard.html', {'data': data, 'comments':comment})
+
+
+class UserProfileView(DetailView):
+    model = UserAccount
+    pk_url_kwarg = 'id'
+    template_name = "auth_user/user_profile.html"
+    # context_object_name = 'post'
+    
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        post = PostModel.objects.filter(posted_user= self.request.user)
+        allUser = UserAccount.objects.all()
+        comments = Comment.objects.all()
+        context['post'] = post
+        context['allUser'] = allUser
+        context['comments'] = comments
+        return context
 
 @method_decorator(login_required, name='dispatch')
 class EditProfileView(UpdateView):

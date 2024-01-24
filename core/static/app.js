@@ -1,13 +1,13 @@
-let btn1 = document.querySelectorAll(".like-button");
+// let btn1 = document.querySelectorAll(".like-button");
 
 
 
-btn1.forEach(likeButton => {
-  likeButton.addEventListener('click', function () {
-    // console.log("toggled")
-    this.classList.toggle("active");
-  });
-});
+// btn1.forEach(likeButton => {
+//   likeButton.addEventListener('click', function () {
+//     // console.log("toggled")
+//     this.classList.toggle("active");
+//   });
+// });
 // button.addEventListener("click", function(e) {
 //   e.preventDefault();
 //   this.classList.toggle("active");
@@ -64,15 +64,17 @@ btn1.forEach(likeButton => {
 // }
 
 
-const commentFunc=(id)=>{
-    // console.log(id);
-    let element = document.getElementById(`comment_${id}`);
-    let comment_div = document.getElementById(`comment_div_${id}`)
-    // console.log(element);
-    // console.log(comment_div);
-    element.addEventListener('click',()=>{
-      comment_div.classList.remove("d-none")
-      comment_div.classList.add("d-block")
-    })
+// const commentFunc=(id)=>{
+//     // console.log(id);
+//     let element = document.getElementById(`comment_${id}`);
+//     let comment_div = document.getElementById(`comment_div_${id}`)
+//     // console.log(element);
+//     // console.log(comment_div);
+//     element.addEventListener('click',()=>{
+//       comment_div.classList.remove("d-none")
+//       comment_div.classList.add("d-block")
+//     })
     
-}
+// }
+
+let image_label = document.getElementsByTagName("label")

@@ -7,18 +7,78 @@
   <div class="col-md-12">
      <div class="row">
        <div class="left-side col-md-3" style="height: 50vh;">
-           <div class="d-flex flex-wrap align-items-center gap-3 p-4" >
+           <div class="d-flex flex-wrap align-items-center gap-3 p-2 m-auto bg-white rounded shadow mt-md-3 w-75" >
                {% for user in posted_user %}
                   {% if user.user.email == request.user.email %}
-                    <div style="width: 48px; height: 48px; border: 2px solid gray; border-radius: 50%;">
-                      <img  style="width: 45px; height: 45px; border-radius: 50%;"  src="{{user.profile_picture.url}}" alt="">
+                    <div style="width: 40px; height: 40px; border: 2px solid gray; border-radius: 50%;">
+                      <img  style="width: 37px; height: 37px; border-radius: 50%;"  src="{{user.profile_picture.url}}" alt="">
                     </div>
-                    <div>{{user.user.username}}</div>
+                    <a class="text-decoration-none text-dark" href="{% url "userprofile" user.id %}" >{{user.user.username}}</a>
                   {% endif %}
                {% endfor %}
            </div>
+           <div class="d-flex flex-wrap   gap-3 p-2  m-auto bg-white rounded shadow mt-md-3 w-75">
+              <div><i class="fa-solid fa-bookmark"></i></div>
+              <p>Saved</p>
+           </div>
        </div>
        <div class="middle-side col-md-6">
+            
+        <div class="swiffy-slider slider-item-show3 slider-item-reveal slider-nav-dark slider-nav-outside-expand">
+          <ul class="slider-container py-4" id="slider2">
+              <li>
+                  <div class="card shadow h-100">
+                      <div class="ratio ratio-1x1">
+                          <video src="https://cdn.pixabay.com/vimeo/872413642/sea-184069.mp4?width=1280&hash=20858b37873d74c65521c1b135cde508ee050519" autoplay>
+                      </div>
+                  </div>
+              </li>
+              <li>
+                  <div class="card shadow h-100">
+                      <div class="ratio ratio-1x1">
+                        <video src="https://cdn.pixabay.com/vimeo/855196335/sea-176303.mp4?width=1280&hash=37c2e6df1fc6c914637a48284381d4f50032618c" autoplay>
+                        </div>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="card shadow h-100">
+                        <div class="ratio ratio-1x1">
+                        <video src="https://cdn.pixabay.com/vimeo/874460313/flowers-184972.mp4?width=640&hash=64cebaf0d9caa1b81587907da3938a67a984b779" autoplay>
+                      </div>
+                      
+                  </div>
+              </li>
+              <li>
+                  <div class="card shadow h-100">
+                      <div class="ratio ratio-1x1">
+                        <video src="https://cdn.pixabay.com/vimeo/883827797/chamois-188861.mp4?width=1280&hash=8e77f46465ccd11b142410efc766e5e22edb371c" autoplay>
+                      </div>
+                      
+                  </div>
+              </li>
+              <li>
+                  <div class="card shadow h-100">
+                      <div class="ratio ratio-1x1">
+                        <video src="https://cdn.pixabay.com/vimeo/858827907/bees-178049.mp4?width=1280&hash=b020bb6dfb66f8f86e60511b96819632341a3238" autoplay>
+                      </div>
+                      
+                  </div>
+              </li>
+              <li>
+                  <div class="card shadow h-100">
+                      <div class="ratio ratio-1x1">
+                        <video src="https://cdn.pixabay.com/vimeo/874643413/book-185096.mp4?width=640&hash=1fc2abd656ab19e5263588af5a0e2144ede4b1e0" autoplay>
+                      </div>
+                      
+                  </div>
+              </li>
+              
+          </ul>
+      
+          <button type="button" class="slider-nav" aria-label="Go to previous"></button>
+          <button type="button" class="slider-nav slider-nav-next" aria-label="Go to next"></button>
+      </div>
+            
            <div class="create-post m-auto mt-4 rounded h-auto" style="height: 30vh; width: 90%; border: 3px solid gray;">
              <h4 class="p-4">Create New Post</h4>
              {% load crispy_forms_tags %}
@@ -26,57 +86,107 @@
               <h1>{{type}}</h1> 
               {% csrf_token %}
               {{form | crispy}}
-              <button class="btn btn-warning">Submit</button>
+              <button class="btn btn-warning" style="margin-left:6rem; margin-bottom:2rem" >Submit</button>
            </form>
            </div>
            {% for p in data %}
            <div class="all-post m-auto mt-4 rounded h-auto" style=" width: 90%; background: white;">
-              <div class="profile-picture d-flex p-3 gap-2">
-                <div style="width: 48px; height: 48px; border: 2px solid gray; border-radius: 50%;">
-                  {% for user in  posted_user %}  
-                       {% if user.user.email == p.posted_user.email %}
-                         <img  style="width: 45px; height: 45px; border-radius: 50%;"  src="{{user.profile_picture.url}}" alt="">
-                        </div>
-                        <div>
-                          <div>{{user.user.username}}</div>
-                          {% endif %}
-                        {% endfor %}
-                    <div><i class="fa-solid fa-globe"></i>{{p.published_date}}</div>
+              <div class="profile-picture d-flex p-3 justify-content-between">
+                <div class="d-flex gap-2">
+                  <div style="width: 48px; height: 48px; border: 2px solid gray; border-radius: 50%;">
+                    {% for user in  posted_user %}  
+                         {% if user.user.email == p.posted_user.email %}
+                           <img  style="width: 45px; height: 45px; border-radius: 50%;"  src="{{user.profile_picture.url}}" alt="">
+                          </div>
+                          <div>
+                            <div>{{user.user.username}}</div>
+                            {% endif %}
+                          {% endfor %}
+                      <div><i class="fa-solid fa-globe"></i>{{p.published_date}}</div>
+                    </div>
+                </div>
+                  <div class="dropdown">
+                    <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      <i class="fa-solid fa-ellipsis"></i>
+                    </button>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="{% url "edit_post" p.id %}">Edit</a></li>
+                      <li><a class="dropdown-item" href="{% url "delete_post" p.id %}">Delete</a></li>
+                    </ul>
                   </div>
                </div>
- 
+               
                <div class="p-3">
+                <h4>{{p.title}}</h4>
                 <span class="" ><img style="width: 60%; height:300px;" src="{{p.image.url}}" alt=""></span>
                 <p>{{p.description}}</p>
                </div>
                <hr>
                <div class="d-flex justify-content-around gap-5">
-                  <span id="likes">like: {{like}}</span>
-                  <span>comment:12</span>
+                  <span id="likes">like: {{p.like}}</span>
+                   <span>comment:{{p.comment}}</span>
                 </div>
                 <hr class="m-auto my-2" style="width: 90%;">
                <div class="d-flex justify-content-around">
-                  <div class="like-button">
-                     <i class="fa fa-thumbs-up"></i>
+                  <div class="like-button d-flex gap-3">
+                        
+                        <a href="{% url 'like' p.id %}"><i class="fa fa-thumbs-up"></i></a>
+                        <a class="text-dark" href="{% url 'dislike' p.id %}"><i class="fa fa-thumbs-down"></i></a>
+                     
                   </div>
+                  
                   {% comment %} <div style="cursor: pointer;" onclick="commentFunc()">comment</div> {% endcomment %}
-                  <div style="cursor: pointer;" id="comment_{{p.id}}" onclick="commentFunc({{p.id}})">comment</div>
+                  <!-- <div style="cursor: pointer;" id="comment_{{p.id}}" onclick="commentFunc({{p.id}})">comment</div>  toggle kore fb er moto korte caicilam but hocce na-->
+                  <a href="{% url 'comment' p.id %}" class="text-dark text-decoration-none">comment</a>
                   <div>saved</div>
                </div>
                <hr class="m-auto my-2" style="width: 90%;">
                <div class="p-3">
-                <div id="comment_div_{{p.id}}" class="m-auto d-none">
-                  <form class="comment_form" method="post" action="">
-                    {% csrf_token %}
-                    {{comment_form | crispy}}
-          
-                   <a class="btn btn-warning" href="{% url "comment" p.id %}">Send</a>
+                <div class="card m-2">
+                  
+                  {% for comment in comments %}
+                    {% if comment.post.id == p.id %}
+                      <div class="card-body border m-2">
+                        <div class="d-flex justify-content-between">
+                        {% for user in  posted_user %}  
+                          {% if user.user.email == comment.user.email %}
+                           <div class="d-flex gap-2">
+                            <div class="cm-img">
+                              <img src="{{user.profile_picture.url}}" alt="">
+                            </div>
+                             {% endif %}
+                            {% endfor %}
+                            <div>
+                              <div>{{comment.user.username}}</div>
+                              <div>{{comment.created_on}}</div>
+                            </div>
+                           </div>
+                          {% if request.user.email == comment.user.email %}
+                          <div class="dropdown">
+                            <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                              <i class="fa-solid fa-ellipsis"></i>
+                            </button>
+                            <ul class="dropdown-menu">
+                              <li><a class="dropdown-item" href="{% url 'edit_comment' comment.id %}">Edit</a></li>
+                              <li><a class="dropdown-item" href="{% url 'delete_comment' comment.id %}">Delete</a></li>
+                            </ul>
+                          </div>
+                          {% endif %}
+                        </div>
+                        <p class="mt-1">{{comment.body}}</p>
+                        <!-- <p>{{comment.id}}</p> -->
+                        
+                      </div>
+                    {% endif %}
+                  {% endfor %}
                 </div>
                </div>
               </div>
               {% endfor %}
             </div>
-       <div class="right-side col-md-3" style="height: 50vh;"></div>
+       <div class="right-side col-md-3" style="height: 50vh;">
+          
+       </div>
      </div>
   </div>
 </main>

@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="container col-md-12">
+    <div class="row">
+        <div class="col-md-3">
+        </div>
+        <div class="col-md-6">
+            <div class="card mt-1" style="height: 300px;">
+                <img class="m-auto" style="border-radius: 45%; height: 200px; width: 200px;" src="{{object.profile_picture.url}}" alt="">
+                <div class="d-flex justify-content-center gap-3 mb-2">
+                    <a class="btn btn-primary" href="#">User Info</a>
+                    <a class="btn btn-primary" href="{% url 'edit_profile' object.user.id %}">Edit Profile</a>
+                    <a class="btn btn-primary" href="#">Follow</a>
+                </div>
+            </div>
+            <div>
+                {% for p in post %}
+                <div class="all-post m-auto mt-4 rounded h-auto" style=" width: 90%; background: white;">
+                    
+                   <div class="profile-picture d-flex p-3 justify-content-between">
+                     <div class="d-flex gap-2">
+                       <div style="width: 48px; height: 48px; border: 2px solid gray; border-radius: 50%;">
+                         
+                                <img  style="width: 45px; height: 45px; border-radius: 50%;"  src="{{object.profile_picture.url}}" alt="">
+                               </div>
+                               
+                               <div>
+                                 <div>{{p.posted_user.first_name}}</div>
+                           <div><i class="fa-solid fa-globe"></i>{{p.published_date}}</div>
+                         </div>
+                     </div>
+                       <div class="dropdown">
+                         <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                           <i class="fa-solid fa-ellipsis"></i>
+                         </button>
+                         <ul class="dropdown-menu">
+                           <li><a class="dropdown-item" href="{% url "edit_post" p.id %}">Edit</a></li>
+                           <li><a class="dropdown-item" href="{% url "delete_post" p.id %}">Delete</a></li>
+                         </ul>
+                       </div>
+                    </div>
+                    
+                    <div class="p-3">
+                     <h4>{{p.title}}</h4>
+                     <span class="" ><img style="width: 60%; height:300px;" src="{{p.image.url}}" alt=""></span>
+                     <p>{{p.description}}</p>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-around gap-5">
+                       <span id="likes">like: {{p.like}}</span>
+                        <span>comment: {{p.comment}}</span>
+                     </div>
+                     <hr class="m-auto my-2" style="width: 90%;">
+                    <div class="d-flex justify-content-around">
+                       <div class="like-button d-flex gap-3">
+                        
+                             <a href="{% url 'like' p.id %}"><i class="fa fa-thumbs-up"></i></a>
+                             <a class="text-dark" href="{% url 'dislike' p.id %}"><i class="fa fa-thumbs-down"></i></a>
+                          
+                       </div>
+                       
+                       {% comment %} <div style="cursor: pointer;" onclick="commentFunc()">comment</div> {% endcomment %}
+                       <!-- <div style="cursor: pointer;" id="comment_{{p.id}}" onclick="commentFunc({{p.id}})">comment</div>  toggle kore fb er moto korte caicilam but hocce na-->
+                       <a href="{% url 'comment' p.id %}" class="text-dark text-decoration-none">comment</a>
+                       <div>saved</div>
+                    </div>
+                    <hr class="m-auto my-2" style="width: 90%;">
+                    <div class="p-3">
+                        <div class="card m-2">
+                  
+                            {% for comment in comments %}
+                              {% if comment.post.id == p.id %}
+                                <div class="card-body border m-2">
+                                  <div class="d-flex justify-content-between">
+                                  {% for user in  allUser %}  
+                                    {% if user.user.email == comment.user.email %}
+                                     <div class="d-flex gap-2">
+                                      <div class="cm-img">
+                                        <img src="{{user.profile_picture.url}}" alt="">
+                                      </div>
+                                       {% endif %}
+                                      {% endfor %}
+                                      <div>
+                                        <div>{{comment.user.username}}</div>
+                                        <div>{{comment.created_on}}</div>
+                                      </div>
+                                     </div>
+                                    {% if request.user.email == comment.user.email %}
+                                    <div class="dropdown">
+                                      <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="fa-solid fa-ellipsis"></i>
+                                      </button>
+                                      <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="{% url 'edit_comment' comment.id %}">Edit</a></li>
+                                        <li><a class="dropdown-item" href="{% url 'delete_comment' comment.id %}">Delete</a></li>
+                                      </ul>
+                                    </div>
+                                    {% endif %}
+                                  </div>
+                                  <p class="mt-1">{{comment.body}}</p>
+                                  <!-- <p>{{comment.id}}</p> -->
+                                  
+                                </div>
+                              {% endif %}
+                            {% endfor %}
+                          </div>
+                    </div>
+                   </div>
+                   {% endfor %}
+            </div>
+        </div>
+        <div class="col-md-3">
+            
+        </div>
+    </div>
+ </div><!-- END container -->
+{% endblock %}

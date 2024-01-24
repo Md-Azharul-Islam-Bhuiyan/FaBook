@@ -4,10 +4,17 @@ from book.models import  PostModel, Comment
 class PostForm(forms.ModelForm):
     class Meta:
         model = PostModel
-        exclude = ['posted_user','like', 'dislike']
+        exclude = ['posted_user','like', 'dislike','comment']
+        
+        labels = {
+            'image':'🖼'
+        }
 
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
+    def __init__(self, *args, **kwargs) -> None:
+        super().__init__(*args, **kwargs)
+        self.fields['image'].widget.attrs['class'] = 'img-label'
+
+     
     
 
 class CommentForm(forms.ModelForm):
