@@ -47,12 +47,15 @@ INSTALLED_APPS = [
     'auth_user',
     'book',
     'contact_us',
-    'core'
+    'core',
+    'news'
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 
 CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+LOGIN_URL = '/auth_user/login/'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

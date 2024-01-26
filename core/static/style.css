@@ -1,6 +1,6 @@
 body{
-    /* width: 1200px; */
-    /* border: 1px solid gray; */
+    margin: 0;
+    padding: 0;
     margin: auto;
     background: rgb(235, 234, 234);
   }
@@ -52,10 +52,15 @@ body{
     padding: 20px;
 }
 
-/* .products-container{
-    height: 600px;
-    width: 70% !important;
-} */
+.post-img{
+    
+    border-radius: 7px;
+    background-size: cover; 
+    background-repeat: no-repeat; 
+    background-position: center top;
+    
+}
+
 
 .category-container{
     height: 70vh;
@@ -122,4 +127,52 @@ body{
 
 .img-label{
     display: none;
+}
+
+
+/****** News feed Style Css *******/
+
+
+.post-container {
+    
+}
+
+.post {
+    
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    margin-right: 10px;
+    
+}
+
+.active {
+    display: block;
+    animation: fadeIn 0.5s ease-out;
+}
+
+
+
+.button {
+    cursor: pointer;
+    padding: 7px;
+    margin: 5px;
+    background: white;
+    border-radius: 5px;
+    transition: background-color 0.3s ease-out;
+}
+
+
+.button:hover {
+    background-color: #ddd;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }

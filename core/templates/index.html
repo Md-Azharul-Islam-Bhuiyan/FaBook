@@ -19,9 +19,35 @@
            </div>
            <div class="d-flex flex-wrap   gap-3 p-2  m-auto bg-white rounded shadow mt-md-3 w-75">
               <div><i class="fa-solid fa-bookmark"></i></div>
-              <p>Saved</p>
+              <span>Saved</span>
            </div>
+           <div class="d-flex flex-wrap   gap-3 px-2 py-2  m-auto bg-white rounded shadow mt-md-3 w-75">
+              <div class="text-black"><i class="fa-solid fa-plus"></i></div>
+              <a class="text-black text-decoration-none" href="{% url 'news' %}">News Feed</a>
+           </div>
+           <div class="d-flex flex-wrap   gap-3 px-2 py-2  m-auto bg-white rounded shadow mt-md-3 w-75">
+              <div class="text-black"><i class="fa-solid fa-plus"></i></div>
+              <a class="text-black text-decoration-none">Follows</a>
+           </div>
+
+           <div class="container bg-white rounded mt-3 p-2 col-md-12" style=" width: 80%; height: 50vh;">
+            {% for user in posted_user %}
+               {% if user.user.id == request.user.id %}
+                 <div class="text-center py-2 m-auto shadow" style="height: 2.5rem; width:10rem; background: rgb(250, 240, 222); border-radius: 30px;">I am following {{user.following}}</div>
+               {% endif %}
+            {% endfor %}
+               
+            {% for user in  follower %}
+              <p class="d-flex gap-2 px-3 py-2 bg-primary rounded w-50 text-center m-auto mt-3 text-black text-decoration-none" style="cursor:pointer;">
+                <span><img style="height:20px; width:20px; border-radius:10px;" src="{{user.following.profile_picture.url}}" alt="">{{user.following.user.username}}</span>
+              </p>
+            {% endfor %}
+               
+            
+         </div>
        </div>
+
+
        <div class="middle-side col-md-6">
             
         <div class="swiffy-slider slider-item-show3 slider-item-reveal slider-nav-dark slider-nav-outside-expand">
@@ -79,14 +105,17 @@
           <button type="button" class="slider-nav slider-nav-next" aria-label="Go to next"></button>
       </div>
             
-           <div class="create-post m-auto mt-4 rounded h-auto" style="height: 30vh; width: 90%; border: 3px solid gray;">
-             <h4 class="p-4">Create New Post</h4>
+           <button id="toggleFormBtn" class="btn d-flex justify-content-center" style="border: 2px solid gray; width: 90%; margin: auto;">Create Post</button>
+
+           
+           <div id="postFormContainer" class="create-post m-auto mt-4 rounded h-auto" style="height: 30vh; width: 90%; border: 3px solid gray;">
+             <h4 class="text-center mt-2">Create New Post</h4>
              {% load crispy_forms_tags %}
-             <form method="post" style="width: 50%; margin: auto;" class="mt-5" enctype="multipart/form-data">
+             <form method="post" style="width: 90%; margin: auto;" class="mt-5" enctype="multipart/form-data">
               <h1>{{type}}</h1> 
               {% csrf_token %}
               {{form | crispy}}
-              <button class="btn btn-warning" style="margin-left:6rem; margin-bottom:2rem" >Submit</button>
+              <button class="btn btn-warning" style="margin-left:12rem; margin-bottom:1rem" >Submit</button>
            </form>
            </div>
            {% for p in data %}
@@ -105,6 +134,7 @@
                       <div><i class="fa-solid fa-globe"></i>{{p.published_date}}</div>
                     </div>
                 </div>
+                 {% if p.posted_user == request.user %}
                   <div class="dropdown">
                     <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                       <i class="fa-solid fa-ellipsis"></i>
@@ -114,11 +144,12 @@
                       <li><a class="dropdown-item" href="{% url "delete_post" p.id %}">Delete</a></li>
                     </ul>
                   </div>
+                 {% endif %}
                </div>
                
                <div class="p-3">
                 <h4>{{p.title}}</h4>
-                <span class="" ><img style="width: 60%; height:300px;" src="{{p.image.url}}" alt=""></span>
+                <span class="" ><img class="img-fluid" src="{{p.image.url}}" alt=""></span>
                 <p>{{p.description}}</p>
                </div>
                <hr>
@@ -184,8 +215,60 @@
               </div>
               {% endfor %}
             </div>
-       <div class="right-side col-md-3" style="height: 50vh;">
-          
+       <div class="right-side col-md-3">
+          <div class="container bg-white rounded mt-3 p-2" style="height: 60vh;">
+             <div class="text-center py-2 m-auto shadow" style="height: 2.5rem; width:10rem; background: rgb(250, 240, 222); border-radius: 30px;">You May Know</div>
+             
+              {% for user in follow_users %}
+                 {% comment %} {% for fu in follower %}
+                  {% if fu.follower.user != request.user%} {% endcomment %}
+                    <a class="d-flex gap-2 px-3 py-2 bg-primary rounded w-50 text-center m-auto mt-3 text-black text-decoration-none" style="cursor:pointer;" href="{% url 'follow' user.id %}">
+                      <span><img style="height:20px; width:20px; border-radius:10px;" src="{{user.profile_picture.url}}" alt=""></span>
+                      <span><b class="me-2">Follow</b><i class="fa-solid fa-rss"></i></span>
+                    </a>
+                   {% comment %} {% endif %}
+                  {% endfor %} {% endcomment %}
+              {% endfor %}
+             
+          </div>
+          <div class="News_area">
+            
+            
+            <div> 
+                <h4 class="text-center p-2">News Feed</h4>
+                
+                <div class="d-flex flex-wrap"> 
+                    {% for category in categories  %}
+                     <a class="button text-decoration-none text-dark" href="{% url 'category_wise_car' category.slug %}"  onclick="togglePost('post{{category.id}}')">{{category.name}}</a>
+                    {% endfor %}
+                </div>
+
+                <div class="post-container mt-2">
+                  {% for post in  news %}
+                      <div id="post{{post.category.id}}" class="post active col-md-12 mt-2">
+                        <div>
+                          <h3>{{post.title}}</h3>
+                           <span><img class="img-fluid rounded" src="{{post.image.url}}" alt=""></span>
+                          <p>{{post.content}}</p>
+                        </div>
+                      
+                       {% if post.posted_user == request.user %}
+                        <div class="dropdown">
+                          <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa-solid fa-ellipsis"></i>
+                          </button>
+                          <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{% url "edit_news" post.id %}">Edit</a></li>
+                            <li><a class="dropdown-item" href="{% url "delete_news" post.id %}">Delete</a></li>
+                          </ul>
+                        </div>
+                       {% endif %}
+                      </div>
+                  {% endfor %}
+
+              </div>
+            </div>
+          </div>
        </div>
      </div>
   </div>

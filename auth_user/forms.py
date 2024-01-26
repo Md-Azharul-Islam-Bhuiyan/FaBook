@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import UserAccount, UserAddress
+from .models import UserAccount, UserAddress, Follow
 from .constants import GENDER_TYPE
 from django.contrib.auth.forms import UserCreationForm
 
@@ -11,6 +11,8 @@ class UserRegistrationForm(UserCreationForm):
     birth_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
     gender = forms.ChoiceField(choices=GENDER_TYPE)
     profile_picture = forms.ImageField()
+    # followers = forms.IntegerField(default=0)
+    # following = forms.IntegerField(default=0)
     phone_no = forms.CharField(max_length=11)
     street_address = forms.CharField(max_length=100)
     city = forms.CharField(max_length=100)
@@ -20,13 +22,27 @@ class UserRegistrationForm(UserCreationForm):
     class Meta:
         model = User
         fields = ['username', 'first_name', 'last_name', 'password1', 'password2', 'phone_no', 'email', 'gender', 'profile_picture','street_address', 'city', 'postal_code', 'country']
-
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget.attrs.update({
+                'class': (
+                    'appearance-none block w-full bg-gray-200 '
+                    'text-gray-700 border border-gray-200 rounded '
+                    'py-3 px-4 leading-tight focus:outline-none '
+                    'focus:bg-white focus:border-gray-500'
+                )
+            })
+            
     def save(self, commit=True):
         user = super().save(commit=False) # ami database a data save korbo na ekhn
         if commit == True:
             user.save()
             birth_date = self.cleaned_data.get('birth_date')
             gender = self.cleaned_data.get('gender')
+            # followers = self.cleaned_data.get('followers')
+            # following = self.cleaned_data.get('following')
             profile_picture = self.cleaned_data.get('profile_picture')
             phone_no = self.cleaned_data.get('phone_no')
             street_address = self.cleaned_data.get('street_address')
@@ -118,6 +134,9 @@ class UserUpdateForm(forms.ModelForm):
    
 
        
-
+class FollowForm(forms.ModelForm):
+    class Meta:
+        model = Follow
+        fields = '__all__'
 
 

@@ -3,9 +3,9 @@
 
 {% block content %}
 {% load crispy_forms_tags %}
-<div class="login-container d-flex flex-wrap" style="height: 170vh;">
+<div class="login-container d-flex flex-wrap" style="height: 230vh;">
     
-    <form method="post" class="bg-primary-subtle p-4 rounded" style="width:50%; height: 155vh; margin: auto;" enctype="multipart/form-data">
+    <form method="post" class="bg-primary-subtle p-4 rounded  w-auto" style="width:50%;  margin: auto;" enctype="multipart/form-data">
         <h1 style="text-align: center;">SignUp Page</h1>
         {% csrf_token %}
         <!-- {{form | crispy}} -->

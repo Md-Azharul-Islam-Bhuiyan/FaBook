@@ -17,10 +17,11 @@
         <button class="btn btn-outline-dark" type="submit">Search</button>
       </form>
       <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-        <li class="nav-item"><a class="nav-link" href="{% url 'home' %}"><i class="fa-solid fa-house"></i></a></li>
-        <li class="nav-item"><a class="nav-link" href="#"><i class="fa-solid fa-message"></i></a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'home' %}"><i style="margin-right:2rem; color:black;" class="fa-solid fa-house"></i></a></li>
+        <li class="nav-item"><a class="nav-link" href="#"><i style="margin-right:2rem; color:black;" class="fa-solid fa-message"></i></a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'news' %}"><i style="margin-right:2rem; color:black;" class="fa-solid fa-circle-plus"></i></a></li>
         <li class="nav-item">
-          <a class="nav-link" href="#"><img style="height: 22px;width: 22px;" src="{% static 'images/bell-ring.png' %}" alt=""></a>
+          <a class="nav-link" href="#"><img style="height: 20px;width: 20px;" src="{% static 'images/bell-ring.png' %}" alt=""></a>
         </li>
         
         <!-- <li class="menu"><a href="login.html" class="text-decoration-none menu">Login</a></li>
@@ -28,7 +29,7 @@
         <div class="dropdown">
           <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
  
-                <img style="height: 30px; width: 30px; border-radius: 15px;" src="{% static "images/dashboard.png" %}" alt="">
+                <img style="height: 25px; width: 25px; border-radius: 15px;" src="{% static "images/dashboard2.png" %}" alt="">
 
           </button>
           <ul class="dropdown-menu">

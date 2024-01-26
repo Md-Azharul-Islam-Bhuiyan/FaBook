@@ -5,6 +5,7 @@
 {% load crispy_forms_tags %}
 {% load static %}
 
+{% if not request.user.is_authenticated %}
 <div class="login-container  d-flex justify-content-center" style="height: 100vh;">
     <div></div>
     <form method="post" class="bg-primary-subtle p-3 rounded" style="width:50%; height: 350px; margin: auto;">
@@ -22,5 +23,6 @@
         <a class="text-decoration-none text-dark" href="{% url "register" %}">Sign Up</a></p>
     </form>
 </div>
+{% endif %}
 
 {% endblock  %}

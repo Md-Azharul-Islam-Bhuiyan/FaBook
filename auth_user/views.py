@@ -1,13 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from book.models import PostModel,Comment, LikePost, DisLikePost
-from auth_user.models import UserAccount
+from auth_user.models import UserAccount, Follow
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.forms import PasswordChangeForm, AuthenticationForm
 from auth_user.forms import UserRegistrationForm, UserUpdateForm
 from django.views.generic import  FormView, View, UpdateView, DetailView
 from django.contrib.auth.views import LoginView
-from django.contrib.auth import login, logout, update_session_auth_hash
+from django.contrib.auth import login, logout, update_session_auth_hash, authenticate
 from django.contrib import messages
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
@@ -44,7 +44,7 @@ def profile(request):
     
     return render(request, 'auth_user/Dashboard.html', {'data': data, 'comments':comment})
 
-
+@method_decorator(login_required, name='dispatch')
 class UserProfileView(DetailView):
     model = UserAccount
     pk_url_kwarg = 'id'
@@ -73,6 +73,21 @@ class EditProfileView(UpdateView):
         messages.success(self.request, 'Profile Updated Successfully')
         return super().form_valid(form)
 
+
+def FollowViews(request, id):
+    Following_obj = get_object_or_404(UserAccount, user=request.user)
+    Follower_obj = get_object_or_404(UserAccount, id=id)
+
+    Follower_obj.followers +=1
+    Following_obj.following +=1
+
+    Follower_obj.save()
+    Following_obj.save()
+
+    Follow.objects.create(follower = Following_obj, following = Follower_obj)
+
+    return redirect('home')
+
 @login_required
 def pass_change(request):
     if request.method == 'POST':
@@ -86,16 +101,36 @@ def pass_change(request):
     else:
         form = PasswordChangeForm(user=request.user)
     return render(request, 'auth_user/change_password.html', {'form': form})
+
+
+# class UserLoginView(LoginView):
+#     template_name = 'auth_user/login.html'
+#     def get_success_url(self):
+#         messages.success(self.request ,'Logged in Successfully')
+#         return reverse_lazy('home')
     
-class UserLoginView(LoginView):
-    template_name = 'auth_user/login.html'
-    def get_success_url(self):
-        messages.success(self.request ,'Logged in Successfully')
-        return reverse_lazy('home')
-    
-    def form_invalid(self, form):
-        messages.error(self.request, 'Invalid username or password. Please try again.')
-        return super().form_invalid(form)
+#     def form_invalid(self, form):
+#         messages.error(self.request, 'Invalid username or password. Please try again.')
+#         return super().form_invalid(form)
+
+
+def user_login(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(request, request.POST)
+        if form.is_valid():
+            user_name = form.cleaned_data['username']
+            user_pass = form.cleaned_data['password']
+            user = authenticate(username=user_name, password=user_pass)
+            if user is not None:
+                messages.success(request, 'Logged in Successfully')
+                login(request, user)
+                return redirect('home')
+            else:
+                messages.warning(request, 'Login informtion incorrect')
+                return redirect('login')
+    else:
+        form = AuthenticationForm()
+        return render(request, 'auth_user/login.html', {'form' : form, 'type' : 'Login'})
     
 
 class UserLogoutView(View):

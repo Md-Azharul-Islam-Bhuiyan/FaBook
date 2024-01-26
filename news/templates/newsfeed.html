@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+
+{% block content %}
+ 
+  <div class="container-fluid  col-md-12">
+    <div class="row">
+        <div class="col-md-3 p-2 text-center m-auto bg-white rounded shadow mt-md-3">
+            <a class="text-decoration-none text-black" href="{% url 'newsCategory' %}">Add Category</a>
+         </div>
+         <div class="col-md-6">
+            <div class="d-flex justify-content-center">
+                {% load crispy_forms_tags %}
+                <form method="post" class="bg-primary-subtle p-4 h-auto rounded" style="margin: auto;" enctype="multipart/form-data">
+                    <h1>{{type}}</h1>
+                    {% csrf_token %}
+                    {{form | crispy}}
+                
+                    <button class="btn btn-warning">Submit</button>
+                </form>
+            </div>
+           
+          </div>
+    
+          <div class="col-md-3"></div>
+    
+      </div>
+  </div>
+
+{% endblock %}
